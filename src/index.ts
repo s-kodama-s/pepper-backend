@@ -15,8 +15,6 @@ app.use(helmet());
 
 app.get('/get-sample', (req, res, next) => {
   getSample(req, res).catch(next);
-  console.log("Hello world");
-  console.log("Hello world");
 });
 
 // 開発環境のみSwaggerを表示
