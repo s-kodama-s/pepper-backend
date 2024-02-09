@@ -1,34 +1,44 @@
-const fs = require("fs");
-const sdk = require("microsoft-cognitiveservices-speech-sdk");
+import * as fs from 'fs';
+import * as sdk from 'microsoft-cognitiveservices-speech-sdk';
+
+type FromFileResponse = {
+  result: string;
+  text?: string;
+  cancellation?: {
+    errorCode: number;
+    errorDetails: string;
+  };
+};
 
 // This example requires environment variables named "SPEECH_KEY" and "SPEECH_REGION"
-const speechConfig = sdk.SpeechConfig.fromSubscription(process.env.SPEECH_KEY, process.env.SPEECH_REGION);
-speechConfig.speechRecognitionLanguage = "ja-JP";
+const speechConfig = sdk.SpeechConfig.fromSubscription('SPEECH_KEY', 'SPEECH_REGION');
+speechConfig.speechRecognitionLanguage = 'ja-JP';
 
-export const fromFile = (audioFile: Buffer) : String => {
-    let audioConfig = sdk.AudioConfig.fromWavFileInput(fs.readFileSync(audioFile));
-    let speechRecognizer = new sdk.SpeechRecognizer(speechConfig, audioConfig);
+export const fromFile = (audioFile: Buffer): FromFileResponse | any => {
+  // FIXME: try catch要追加
+  const audioConfig = sdk.AudioConfig.fromWavFileInput(fs.readFileSync(audioFile));
+  const speechRecognizer = new sdk.SpeechRecognizer(speechConfig, audioConfig);
 
-    speechRecognizer.recognizeOnceAsync(result => {
-        switch (result.reason) {
-            case sdk.ResultReason.RecognizedSpeech:
-                console.log(`RECOGNIZED: Text=${result.text}`);
-                return result.text;
-                break;
-            case sdk.ResultReason.NoMatch:
-                console.log("NOMATCH: Speech could not be recognized.");
-                break;
-            case sdk.ResultReason.Canceled:
-                const cancellation = sdk.CancellationDetails.fromResult(result);
-                console.log(`CANCELED: Reason=${cancellation.reason}`);
-
-                if (cancellation.reason == sdk.CancellationReason.Error) {
-                    console.log(`CANCELED: ErrorCode=${cancellation.ErrorCode}`);
-                    console.log(`CANCELED: ErrorDetails=${cancellation.errorDetails}`);
-                    console.log("CANCELED: Did you set the speech resource key and region values?");
-                }
-                break;
-        }
-        speechRecognizer.close();
-    });
-}
+  const response = speechRecognizer.recognizeOnceAsync((result) => {
+    switch (result.reason) {
+      case sdk.ResultReason.RecognizedSpeech:
+        const recognizedSpeech = { result: result.reason, text: result.text };
+        return recognizedSpeech;
+      case sdk.ResultReason.NoMatch:
+        const noMatch = { result: result.reason, text: result.text };
+        return noMatch;
+      case sdk.ResultReason.Canceled:
+        const cancellation = sdk.CancellationDetails.fromResult(result);
+        const canceled = {
+          result: result.reason,
+          cancellation: {
+            errorCode: cancellation.ErrorCode,
+            errorDetails: cancellation.errorDetails,
+          },
+        };
+        return canceled;
+    }
+    speechRecognizer.close();
+    return response;
+  });
+};
