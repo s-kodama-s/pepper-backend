@@ -1,35 +1,55 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import './App.css';
+import { useState } from 'react';
+
+const isWav = (name: string): boolean => {
+  const arr = name.split('.');
+  return 'wav' === arr[arr.length - 1];
+};
+
+async function submitWav(fname: string): Promise<void> {
+  try {
+    const formData = new FormData();
+    formData.append('file', fname);
+
+    const response = await fetch('https://examplexxx.com/uploadxxx', {
+      method: 'POST',
+      body: formData,
+    });
+
+    if (response.ok) {
+      const responseData = await response.json();
+      console.log('File uploaded successfully:', responseData);
+    } else {
+      throw new Error('Failed to upload file');
+    }
+  } catch (error) {
+    console.error('Error uploading file:', error);
+  }
+}
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [name, setName] = useState<string>();
 
   return (
     <>
+      <p>Hello world!</p>
       <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+        <input
+          type="file"
+          accept=".wav"
+          onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+            const files = event.currentTarget.files;
+            if (!files || files?.length === 0) return;
+            const file = files[0];
+            setName(file.name);
+            submitWav(file.name);
+          }}
+        />
+        <br />
+        {name ? (isWav(name) ? "it's wav" : "it's not wav") : null}
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
