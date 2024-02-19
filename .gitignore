@@ -11,3 +11,9 @@ Thumbs.db
 
 # Ignore built ts files
 dist/**/*
+
+# Ignore upload files
+upload/**/*
+
+# environment file
+.env
