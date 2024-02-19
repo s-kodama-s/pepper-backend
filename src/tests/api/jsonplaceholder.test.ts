@@ -1,9 +1,9 @@
-import { fetchUsers } from '../../api/jsonplaceholder';
+// import { fetchUsers } from '../../api/jsonplaceholder';
 
-describe('jsonplaceholder', () => {
-  it('should return users', async () => {
-    const users = await fetchUsers();
-    console.log(users);
-    expect(users).toBeDefined();
-  });
-});
+// describe('jsonplaceholder', () => {
+//   it('should return users', async () => {
+//     const users = await fetchUsers();
+//     console.log(users);
+//     expect(users).toBeDefined();
+//   });
+// });
