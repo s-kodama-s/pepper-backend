@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`send text file should return error 1`] = `[Function]`;
+
+exports[`send wav file should return error 1`] = `[Function]`;
+
+exports[`send wav file should send a text 1`] = `[Function]`;
+
+exports[`send wav file success 1`] = `[Function]`;
+
+exports[`send wav file success 2`] = `[Function]`;
