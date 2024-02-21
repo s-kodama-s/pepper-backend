@@ -1,35 +1,37 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import './App.css';
+import { submitWav, isWav } from './Wav';
+import { useState } from 'react';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [data, setData] = useState<string>('');
+  const handleOnChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const files = event.currentTarget.files;
+
+    if (!files || files?.length === 0) return;
+    const file = files[0];
+    console.log(file);
+
+    const getResText = async () => {
+      if (isWav(file.name)) {
+        const res = await submitWav(file.name);
+        console.log(res);
+        setData(res);
+      } else {
+        alert('It is not wav');
+      }
+    };
+    getResText();
+  };
 
   return (
     <>
+      <h2>ペッパーくんに物申す</h2>
       <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+        <input type="file" accept=".wav" aria-label="uploadfile" onChange={handleOnChange} />
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <p>{data}</p>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
