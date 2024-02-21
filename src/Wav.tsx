@@ -1,4 +1,4 @@
-export async function submitWav(fname: string): Promise<void> {
+export async function submitWav(fname: string): Promise<string> {
   const formData = new FormData();
   formData.append('file', fname);
 
@@ -7,20 +7,20 @@ export async function submitWav(fname: string): Promise<void> {
     console.log(`${d[0]}: ${d[1]}`);
   }
 
-  try {
-    fetch('https://examplexxx.com/uploadxxx', {
+  return new Promise<string>((resolve) => {
+    fetch('https://app-gtt-ossp-dev-je-001.azurewebsites.net', {
       method: 'POST',
       body: formData,
     })
       .then((response) => {
         console.log('File uploaded successfully:', response);
+        resolve(response.toString());
       })
       .catch((reason) => {
         console.error('File upload failed:', reason);
+        resolve('ファイルのアップロードに失敗しました');
       });
-  } catch (error) {
-    console.error('Error uploading file:', error);
-  }
+  });
 }
 
 export const isWav = (fname: string): boolean => {
