@@ -13,7 +13,7 @@ function App() {
 
     const getResText = async () => {
       if (isWav(file.name)) {
-        const res = await submitWav(file.name);
+        const res = await submitWav(file);
         console.log(res);
         setData(res);
       } else {

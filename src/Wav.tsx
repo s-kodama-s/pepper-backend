@@ -1,19 +1,25 @@
-export async function submitWav(fname: string): Promise<string> {
+export async function submitWav(file: File): Promise<string> {
   const formData = new FormData();
-  formData.append('wavfile', fname);
+  formData.append('wavfile', file);
 
-  return new Promise<string>((resolve) => {
-    fetch('https://app-gtt-ossp-dev-je-001.azurewebsites.net', {
+  return new Promise<string>((resolve, reject) => {
+    console.log('formData');
+    console.log(formData);
+    fetch('https://app-gtt-ossp-dev-je-001.azurewebsites.net/', {
       method: 'POST',
       body: formData,
     })
       .then((response) => {
+        if (!response.ok) {
+          reject('File upload failed');
+        }
         console.log('File uploaded successfully:', response);
-        resolve(response.toString());
+        const hoge = response.json();
+        resolve(hoge);
       })
       .catch((reason) => {
         console.error('File upload failed:', reason);
-        resolve('ファイルのアップロードに失敗しました');
+        reject('ファイルのアップロードに失敗しました');
       });
   });
 }
