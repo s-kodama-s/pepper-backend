@@ -1,11 +1,6 @@
 export async function submitWav(fname: string): Promise<string> {
   const formData = new FormData();
-  formData.append('file', fname);
-
-  console.log('request body: ', formData);
-  for (let d of formData.entries()) {
-    console.log(`${d[0]}: ${d[1]}`);
-  }
+  formData.append('wavfile', fname);
 
   return new Promise<string>((resolve) => {
     fetch('https://app-gtt-ossp-dev-je-001.azurewebsites.net', {
