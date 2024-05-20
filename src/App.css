@@ -40,3 +40,58 @@
 .read-the-docs {
   color: #888;
 }
+
+table.questionnaire {
+  width: 500px;
+  margin: 0 auto;
+  border-collapse: separate;
+  border-spacing: 0px 15px;
+  font-size: 12px;
+}
+
+table.questionnaire th,
+table.questionnaire td {
+  padding: 10px;
+}
+
+table.questionnaire td {
+  padding: 10px;
+  text-align: left;
+}
+
+table.questionnaire th {
+  white-space: nowrap;
+  background: #295890;
+  vertical-align: middle;
+  text-align: left;
+  width: 100px;
+  overflow: visible;
+  position: relative;
+  color: #fff;
+  font-weight: normal;
+  font-size: 15px;
+}
+
+table.questionnaire th:after {
+  left: 100%;
+  top: 50%;
+  border: solid transparent;
+  content: " ";
+  height: 0;
+  width: 0;
+  position: absolute;
+  pointer-events: none;
+  border-color: rgba(136, 183, 213, 0);
+  border-left-color: #295890;
+  border-width: 10px;
+  margin-top: -10px;
+}
+
+p {
+  font-size: x-small;
+  text-align: left;
+}
+
+a {
+  color: lightgrey;
+}
